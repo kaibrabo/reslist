@@ -4,7 +4,11 @@ import './list-item.css';
 class ListItem extends Component {
     render() {
         return (
-            <li>name: {this.props.name} phone: {this.props.phone}</li>
+            <li>
+                <p>name: {this.props.name}</p>
+                <p>phone: {this.props.phone}</p>
+                <input type="checkbox" checked={this.props.isSeated} />
+            </li>
         )
     }
 }
