@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Login from './login';
-// import UserInput from './userInput';
 import ListItem from './list-item';
 import './App.css';
 
@@ -9,24 +8,7 @@ class App extends Component {
     super(props);
     
     this.state = {
-      reservations: [
-        {
-          name: "Guest 1", 
-          phone: "4154154155", 
-          numGuests: 1, 
-          isSeated: true
-        }, {
-          name: "Guest 2", 
-          phone: "4154245861", 
-          numGuests: 2,
-          isSeated: false
-        }, {
-          name: "Guest 3", 
-          phone: "4154545544", 
-          numGuests: 3,
-          isSeated: false
-        }
-      ],
+      reservations: [],
       
       newReservation: {
         name: '',
@@ -53,8 +35,13 @@ class App extends Component {
   handleSubmit(e) {
     // blocks page reload
     e.preventDefault();
-    console.log("handleSubmit");
     
+    // checks for new values
+    if (!this.state.newReservation) {
+      return;
+    }
+    
+    // capture input values
     const newRes = {
       name: this.state.newReservation.name,
       phone: this.state.newReservation.phone,
@@ -62,21 +49,25 @@ class App extends Component {
       isSeated: this.state.newReservation.isSeated
     };
     
+    // sets new state
     this.setState({
-      reservations: [ ...this.state.reservations, newRes ]
+      reservations: [ ...this.state.reservations, newRes ],
+      newReservation: ''
     });
   }
   
   handleChange(e) {
     let nameVal, phoneVal, guestsVal, numGuestsVal;
     
+    // sets input values
     nameVal = document.getElementById("name").value;
     phoneVal = document.getElementById("phone").value;
     guestsVal = document.getElementById("numGuests").value;
     
     // converts str to int
-    numGuestsVal = Number(guestsVal)
+    numGuestsVal = Number(guestsVal);
     
+    // sets newReservation values
     this.setState({ newReservation: {
                     name: nameVal,
                     phone: phoneVal,
