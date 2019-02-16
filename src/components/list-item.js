@@ -7,7 +7,10 @@ class ListItem extends Component {
             <li>
                 <p>name: {this.props.name}</p>
                 <p>phone: {this.props.phone}</p>
-                <input type="checkbox" checked={this.props.isSeated} />
+                <p>guests: {this.props.numGuests}</p>
+                <input type="checkbox" 
+                       checked={this.props.isSeated}
+                       onChange={this.props.toggleComplete}/>
             </li>
         )
     }
