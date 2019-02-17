@@ -5,7 +5,7 @@ class Login extends Component {
     render() {
         return (
             <div className="login-container">
-                <h3>Login</h3>
+                <div className="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         );
     }

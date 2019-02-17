@@ -20,6 +20,7 @@ class App extends Component {
   }
   
   toggleComplete(index) {
+    console.log(index);
     // creates new array
     const reservations = this.state.reservations.slice();
     const reservation = reservations[index];
@@ -84,27 +85,51 @@ class App extends Component {
           <h1>res<span>list</span></h1>
           <Login />
         </div>
-        <form onSubmit={e => {this.handleSubmit(e)}}>
-            <input type="text" 
-                   placeholder=" name"
-                   id="name"
-                   value={this.state.newReservation.name}
-                   onChange={e => this.handleChange(e)}/>
-            <input type="tel" 
-                   placeholder=" phone"
-                   id="phone"
-                   maxLength="10"
-                   value={this.state.newReservation.phone}
-                   onChange={e => this.handleChange(e)}/>
-            <input type="number" // Only allows integers for input
-                   placeholder=" # of guests"
-                   id="numGuests"
-                   min="1"
-                   value={this.state.newReservation.numGuests}
-                   onChange={e => this.handleChange(e)}/>
+        <form onSubmit={e => {this.handleSubmit(e)}} className="res-form">
+          <table>
+              <tr>
+                <td>Name:</td>
+                <td>
+                  <div>
+                    <input type="text" 
+                           placeholder=" name"
+                           id="name"
+                           value={this.state.newReservation.name}
+                           onChange={e => this.handleChange(e)}/>
+                  </div>
+                </td>
+              </tr>
+  
+              <tr>
+                <td>Phone:</td>
+                <td>
+                  <div>
+                    <input type="tel" 
+                           placeholder=" phone"
+                           id="phone"
+                           maxLength="10"
+                           value={this.state.newReservation.phone}
+                           onChange={e => this.handleChange(e)}/>
+                  </div>
+                </td>
+              </tr>
 
-            
-            <input type="submit" />
+              <tr>
+                <td>Guests:</td>
+                <td>
+                  <div>
+                    <input type="number" // Only allows integers for input
+                           placeholder=" # of guests"
+                           id="numGuests"
+                           min="1"
+                           value={this.state.newReservation.numGuests}
+                           onChange={e => this.handleChange(e)}/>
+                  </div>
+                </td>
+              </tr>
+
+          </table>
+          <input type="submit" />
         </form>
         <ul>
           {   
