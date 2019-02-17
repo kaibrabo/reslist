@@ -25,3 +25,9 @@
   flex-direction: column;
   align-items: center;
 }
+
+.res-list {
+  border: 2px solid red;
+  width: 50%;
+  margin: 20px auto 0 auto;
+}
