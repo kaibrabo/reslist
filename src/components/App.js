@@ -90,8 +90,8 @@ class App extends Component {
     e.preventDefault();
     
     // checks for new values
-    if (!this.state.newReservation) {
-      return;
+    if (!this.state.newReservation.name || !this.state.newReservation.phone){
+      return alert("a NAME or PHONE number is required");
     }
     
     // capture input values
@@ -104,6 +104,11 @@ class App extends Component {
     
     // pushes newRes to firebase DB
     reservationsRef.push(newRes);
+    
+    // clears input after submit
+    this.state.newReservation.name = '';
+    this.state.newReservation.phone = '';
+    this.state.newReservation.numGuests = 1;
   }
   
   removeReservation(resId) {
@@ -125,7 +130,7 @@ class App extends Component {
           <table>
             <tbody>
               <tr>
-                <td>Name:</td>
+                <td class="res-form-label">name:</td>
                 <td>
                   <div>
                     <input type="text" 
@@ -138,7 +143,7 @@ class App extends Component {
               </tr>
   
               <tr>
-                <td>Phone:</td>
+                <td class="res-form-label">phone:</td>
                 <td>
                   <div>
                     <input type="tel" 
@@ -152,7 +157,7 @@ class App extends Component {
               </tr>
               
               <tr>
-                <td>Guests:</td>
+                <td class="res-form-label">guests:</td>
                 <td>
                   <div>
                     <input type="number" // Only allows integers for input
@@ -171,20 +176,40 @@ class App extends Component {
   
         {/* Display Reservation List */}
         <div className="res-list">
-          <ul>
+        <h2>Reservations</h2>
+          <ol>
             {this.state.reservations.map((item) => {
                 return <li key={item.id}>
-                    <p>name: {item.name}</p>
-                    <p>phone: {item.phone}</p>
-                    <p>guests: {item.numGuests}</p>
-                    <input type="checkbox" 
-                           checked={item.isSeated}
-                           onChange={() => this.toggleComplete(item.id, item)}/>
-                    <button className="remove-btn"
-                            onClick={() => this.removeReservation(item.id)}>Remove</button>
+                
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>name:</td>
+                          <td>{item.name}</td>
+                          <td>seated:</td>
+                          <td>
+                            <input type="checkbox" 
+                            checked={item.isSeated}
+                            onChange={() => this.toggleComplete(item.id, item)}/>
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td>phone:</td>
+                          <td>{item.phone}</td>                          
+                          <td>guests:</td>
+                          <td>{item.numGuests}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="remove-btn-container">
+                      <button 
+                      className="remove-btn"
+                      onClick={() => this.removeReservation(item.id)}>Remove</button>
+                    </div>
                 </li>;
             })}
-          </ul>
+          </ol>
         </div>
       </div>
     );
