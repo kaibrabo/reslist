@@ -69,20 +69,17 @@ class App extends Component {
     });
   }
   
-  toggleComplete(index) {
-    // creates new array
-    // const reservations = this.state.reservations.slice();
-    // const reservation = reservations[index];
-    const reservations = firebase.database();
-    
-    console.log('reservations =', reservations)
-    // console.log('reservation =', reservation)
+  toggleComplete(itemId, item) {
+    // GET reservation object
+    const resRef = firebase.database().ref(`/reservations/${itemId}/isSeated`);
+
     // checks bool and sets inverse value
-    // if true, set false / if false, set true
-    // reservation.isSeated = reservation.isSeated ? false : true;
-    
-    // applies new array to the reservations prop in state
-    // this.setState( { reservations: reservations });
+    // if false, set true / if true, set false
+    if (!item.isSeated) {
+      resRef.set(true);
+    } else {
+      resRef.set(false);
+    }
   }
   
   handleSubmit(e) {
@@ -110,7 +107,6 @@ class App extends Component {
   }
   
   removeReservation(resId) {
-    console.log("removed = ",resId);
     const resRef = firebase.database().ref(`/reservations/${resId}`);
     resRef.remove();
   }
@@ -183,7 +179,7 @@ class App extends Component {
                     <p>guests: {item.numGuests}</p>
                     <input type="checkbox" 
                            checked={item.isSeated}
-                           onChange={this.toggleComplete}/>
+                           onChange={() => this.toggleComplete(item.id, item)}/>
                     <button className="remove-btn"
                             onClick={() => this.removeReservation(item.id)}>Remove</button>
                 </li>;
