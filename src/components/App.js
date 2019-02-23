@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Login from './login';
-import ListItem from './list-item';
+// import ListItem from './list-item';
 import firebase from '../firebase'
 import './App.css';
 
@@ -12,6 +12,7 @@ class App extends Component {
       reservations: [],
       
       newReservation: {
+        id: '',
         name: '',
         phone: '',
         numGuests: 1,
@@ -70,15 +71,18 @@ class App extends Component {
   
   toggleComplete(index) {
     // creates new array
-    const reservations = this.state.reservations.slice();
-    const reservation = reservations[index];
+    // const reservations = this.state.reservations.slice();
+    // const reservation = reservations[index];
+    const reservations = firebase.database();
     
+    console.log('reservations =', reservations)
+    // console.log('reservation =', reservation)
     // checks bool and sets inverse value
     // if true, set false / if false, set true
-    reservation.isSeated = reservation.isSeated ? false : true;
+    // reservation.isSeated = reservation.isSeated ? false : true;
     
     // applies new array to the reservations prop in state
-    this.setState( { reservations: reservations });
+    // this.setState( { reservations: reservations });
   }
   
   handleSubmit(e) {
@@ -106,11 +110,9 @@ class App extends Component {
   }
   
   removeReservation(resId) {
-    console.log("remove item");
-    console.log('resId = ', resId);
-    const resRef = firebase.database().ref(`reservations${resId}`);
-    console.log(resRef);
-    // resRef.remove();
+    console.log("removed = ",resId);
+    const resRef = firebase.database().ref(`/reservations/${resId}`);
+    resRef.remove();
   }
   
   render() {
@@ -122,6 +124,7 @@ class App extends Component {
           <Login />
         </div>
   
+        {/* Reservation Input Form */}
         <form onSubmit={e => {this.handleSubmit(e)}} className="res-form">
           <table>
             <tbody>
@@ -151,7 +154,7 @@ class App extends Component {
                   </div>
                 </td>
               </tr>
-
+              
               <tr>
                 <td>Guests:</td>
                 <td>
@@ -170,20 +173,21 @@ class App extends Component {
           <input type="submit" />
         </form>
   
-        {/* Reservation List */}
+        {/* Display Reservation List */}
         <div className="res-list">
           <ul>
-            {   
-              this.state.reservations.map((item) => (
-                <ListItem key={item.id} 
-                          name={item.name}
-                          phone={item.phone}
-                          numGuests={item.numGuests}
-                          isSeated={item.isSeated}
-                          toggleComplete={() => this.toggleComplete(item.id)}
-                          removeReservation={() => this.removeReservation()}/>
-              ))
-            }
+            {this.state.reservations.map((item) => {
+                return <li key={item.id}>
+                    <p>name: {item.name}</p>
+                    <p>phone: {item.phone}</p>
+                    <p>guests: {item.numGuests}</p>
+                    <input type="checkbox" 
+                           checked={item.isSeated}
+                           onChange={this.toggleComplete}/>
+                    <button className="remove-btn"
+                            onClick={() => this.removeReservation(item.id)}>Remove</button>
+                </li>;
+            })}
           </ul>
         </div>
       </div>
